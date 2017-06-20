@@ -33,7 +33,7 @@ knn.fit(X_train,y_train)
 y_pred = knn.predict(X_test)
 print("Test set preds: {}".format(y_pred))
 print("Classifier Accuracy/Score: {:.2f}".format(knn.score(X_test, y_test)))
-
+# 99% Accuracy
 print(digits_dataset['target'][20])
 z_pred = knn.predict(testVal)
 print("Data point prediction: {}".format(z_pred))
