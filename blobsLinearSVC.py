@@ -6,7 +6,7 @@ import mglearn
 import numpy as np
 
 X, y = make_blobs(random_state=42)
-
+print(X)
 mglearn.discrete_scatter(X[:,0], X[:,1],y)
 plt.xlabel("Feature 0")
 plt.ylabel("Feature 1")
