@@ -31,3 +31,6 @@ export_graphviz(tree1, out_file="tree.dot", class_names=["malignant","benign"], 
 with open("tree.dot") as f:
     dot_graph = f.read()
 graphviz.Source(dot_graph)
+
+print("Feature importances {}".format(tree1.feature_importances_))
+
