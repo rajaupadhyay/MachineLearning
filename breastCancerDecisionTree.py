@@ -1,6 +1,8 @@
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.datasets import load_breast_cancer
+from sklearn.tree import export_graphviz
+import graphviz
 # Breast cancer classification using decision trees
 
 cancer = load_breast_cancer()
@@ -23,3 +25,9 @@ tree1.fit(X_train, y_train)
 
 print("Training Accuracy {:.2f}".format(tree1.score(X_train, y_train)))
 print("Testing Accuracy {:.2f}".format(tree1.score(X_test, y_test)))
+
+export_graphviz(tree1, out_file="tree.dot", class_names=["malignant","benign"], feature_names=cancer.feature_names, impurity=False, filled=True)
+
+with open("tree.dot") as f:
+    dot_graph = f.read()
+graphviz.Source(dot_graph)
