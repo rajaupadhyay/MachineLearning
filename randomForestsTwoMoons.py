@@ -7,9 +7,9 @@ import mglearn
 # The randomisation in data selection (with replacement) provides different perspectives
 X, y = make_moons(n_samples=100, noise=0.25, random_state=3)
 X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=42)
-
+# Forest consisting of 5 trees
 forest = RandomForestClassifier(n_estimators=5, random_state=2)
-
+# Random state for reproducable results
 forest.fit(X_train, y_train)
 
 fig, axes = plt.subplots(2,3,figsize=(20,10))
