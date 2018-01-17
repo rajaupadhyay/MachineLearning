@@ -1,3 +1,9 @@
+import seaborn as sns
+import matplotlib.pyplot as plt
+from matplotlib import style
+style.use('ggplot')
+
+
 def main():
     training_data = [[1.00,	0.08,	0.72,	1.0],
                     [1.00,	0.10,	1.00,	0.0],
@@ -8,15 +14,43 @@ def main():
                     [1.00,	0.70,	0.65,	0.0],
                     [1.00,	0.92,	0.45,	0.0]]
 
+    training_data2 = [[1.00,	0.0,	1.0,	1.0],
+                    [1.00,	1.0,	1.0,	1.0],
+                    [1.00,	1.0,	0.0,	1.0],
+                    [1.00,	0.0,	0.0,	0.0],]
+
     weights = [0.20, 1.00, -1.00]
 
     epochs = 10
     eta = 1.0
     train_weights(training_data, weights)
+    # train_weights(training_data2, weights)
 
 
 def plot(matrix,weights):
-    pass
+    # Add line through plot
+    x = [row[1] for row in matrix]
+    y = [row[2] for row in matrix]
+    cl = [row[-1] for row in matrix]
+    print(x, y)
+    indices_1 = [i for i in range(len(cl)) if cl[i] == 1.0]
+    x_label1 = [x[i] for i in indices_1]
+    y_label1 = [y[i] for i in indices_1]
+
+    indices_2 = [i for i in range(len(cl)) if cl[i] == 0.0]
+    x_label2 = [x[i] for i in indices_2]
+    y_label2 = [y[i] for i in indices_2]
+
+    plt.scatter(x_label1, y_label1, c='r', label="Class A")
+    plt.scatter(x_label2, y_label2, c='b', label="Class B")
+    plt.legend()
+
+    # Plot Separator
+    # line = [(weights[0]/weights[1]), (weights[0]/weights[2])]
+    # print(line)
+    # plt.plot([0, (weights[0]/weights[2])], [(weights[0]/weights[1]), 0])
+
+    plt.show()
 
 
 def predict(input, weights):
@@ -39,12 +73,12 @@ def accuracy(matrix, weights):
 def train_weights(matrix, weights, epochs=10, eta=1.0):
     for epoch in range(epochs):
         print("Epoch {}".format(epoch))
-        current_predicition = accuracy(matrix, weights)
-        print("Current prediction {}".format(current_predicition))
-        if current_predicition == 1.0:
+        current_prediction = accuracy(matrix, weights)
+        print("Current prediction {}".format(current_prediction))
+        if current_prediction == 1.0:
             print("Training complete")
             break
-
+        plot(matrix, weights)
         for row in matrix:
             prediction = predict(row[:-1], weights)
             error = row[-1]-prediction
@@ -54,6 +88,7 @@ def train_weights(matrix, weights, epochs=10, eta=1.0):
                 weights[j] += eta*error*row[j]
 
     print("Accuracy after training: {}".format(accuracy(matrix, weights)))
+    plot(matrix, weights)
     return weights
 
 if __name__ == '__main__':
