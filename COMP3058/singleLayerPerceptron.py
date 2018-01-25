@@ -12,12 +12,21 @@ def main():
                     [1.00,	0.45,	0.15,	1.0],
                     [1.00,	0.60,	0.30,	1.0],
                     [1.00,	0.70,	0.65,	0.0],
-                    [1.00,	0.92,	0.45,	0.0]]
+                    [1.00,	0.92,	0.45,	0.0],
+                    [1.00,  0.09,   1.20,   0.0]]
 
-    training_data2 = [[1.00,	0.0,	1.0,	1.0],
-                    [1.00,	1.0,	1.0,	1.0],
-                    [1.00,	1.0,	0.0,	1.0],
-                    [1.00,	0.0,	0.0,	0.0],]
+    training_data2 = [	[1.0,	0.02, 	0.48,	0.0],
+                        [1.0,	0.08, 	0.72,	1.0],
+                        [1.0,	0.10, 	1.00,	0.0],
+                        [1.0,	0.20, 	0.50,	1.0],
+                        [1.0,	0.24, 	0.30,	1.0],
+                        [1.0,	0.35, 	0.35,	1.0],
+                        [1.0,	0.36, 	0.75,	0.0],
+                        [1.0,	0.45, 	0.50,	1.0],
+                        [1.0,	0.52, 	0.24,	0.0],
+                        [1.0,	0.70, 	0.65,	0.0],
+                        [1.0,	0.80, 	0.26,	0.0],
+                        [1.0,	0.92, 	0.45,	0.0]]
 
     weights = [0.20, 1.00, -1.00]
 
@@ -48,7 +57,7 @@ def plot(matrix,weights):
     # Plot Separator
     # line = [(weights[0]/weights[1]), (weights[0]/weights[2])]
     # print(line)
-    # plt.plot([0, (weights[0]/weights[2])], [(weights[0]/weights[1]), 0])
+    plt.plot([0, -(weights[0]/weights[2])], [-(weights[0]/weights[1]), 0])
 
     plt.show()
 
@@ -59,13 +68,13 @@ def predict(input, weights):
 
 
 def accuracy(matrix, weights):
-    correct_predictions = 0
+    correct_predictions = 0.0
     predictions = []
     for row in matrix:
         res = predict(row[:-1], weights)
         predictions.append(res)
         if res == row[-1]:
-            correct_predictions += 1
+            correct_predictions += 1.0
 
     return correct_predictions/float(len(matrix))
 
@@ -73,19 +82,21 @@ def accuracy(matrix, weights):
 def train_weights(matrix, weights, epochs=10, eta=1.0):
     for epoch in range(epochs):
         print("Epoch {}".format(epoch))
-        current_prediction = accuracy(matrix, weights)
-        print("Current prediction {}".format(current_prediction))
-        if current_prediction == 1.0:
+        current_accuracy = accuracy(matrix, weights)
+        print("Current prediction {}".format(current_accuracy))
+        if current_accuracy == 1.0:
             print("Training complete")
             break
-        plot(matrix, weights)
         for row in matrix:
             prediction = predict(row[:-1], weights)
+            print("PREDICTION VS REAL: {} {}".format(prediction, row[-1]))
             error = row[-1]-prediction
 
             # Update weights
             for j in range(len(weights)):
                 weights[j] += eta*error*row[j]
+
+        plot(matrix, weights)
 
     print("Accuracy after training: {}".format(accuracy(matrix, weights)))
     plot(matrix, weights)
